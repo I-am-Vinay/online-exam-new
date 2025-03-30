@@ -178,7 +178,6 @@
                 <tr>
                     <th>Course</th>
                     <th>Total Questions</th>
-                    <th>Total Marks</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -187,7 +186,6 @@
                 <tr>
                     <td data-label="Course">{{t.course_name}}</td>
                     <td data-label="Total Questions">{{t.question_number}}</td>
-                    <td data-label="Total Marks">{{t.total_marks}}</td>
                     <td data-label="Action">
                         <a href="{% url 'delete-exam' t.id %}" class="action-btn" title="Delete Course">
                             <i class="fas fa-trash"></i>
