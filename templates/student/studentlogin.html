@@ -1,0 +1,210 @@
+{% extends "exam/base.html" %}
+{% load widget_tweaks %}
+
+{% block title %}Student Login - Online Examination System{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary-color: #4a90e2;
+        --secondary-color: #2c3e50;
+        --accent-color: #e74c3c;
+        --success-color: #2ecc71;
+        --text-color: #333;
+        --light-bg: #f8f9fa;
+    }
+
+    .login-container {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 20px;
+        background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+        font-family: 'Poppins', sans-serif;
+    }
+    
+    .login-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        width: 100%;
+        max-width: 450px;
+        padding: 40px;
+        text-align: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .login-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    }
+    
+    .welcome-text {
+        margin-bottom: 30px;
+    }
+
+    .welcome-text h1 {
+        color: var(--secondary-color);
+        font-size: 2.5rem;
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
+
+    .welcome-text p {
+        color: #666;
+        font-size: 1.1rem;
+        margin-bottom: 30px;
+    }
+    
+    .form-group {
+        position: relative;
+        margin-bottom: 25px;
+    }
+    
+    .form-control {
+        width: 100%;
+        padding: 15px 45px 15px 20px;
+        border-radius: 12px;
+        border: 2px solid #e1e1e1;
+        font-size: 1rem;
+        color: var(--text-color);
+        transition: all 0.3s ease;
+        background: var(--light-bg);
+    }
+    
+    .form-control:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+        outline: none;
+    }
+    
+    .input-icon {
+        position: absolute;
+        top: 50%;
+        right: 15px;
+        transform: translateY(-50%);
+        color: #7f8c8d;
+        font-size: 1.2rem;
+    }
+    
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 12px 30px;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 1rem;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+        width: 100%;
+    }
+    
+    .btn-primary {
+        background: var(--primary-color);
+        color: white;
+    }
+    
+    .btn-secondary {
+        background: var(--secondary-color);
+        color: white;
+    }
+    
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+    
+    .btn i {
+        margin-right: 8px;
+        font-size: 1.1rem;
+    }
+    
+    .action-buttons {
+        display: grid;
+        gap: 15px;
+        margin-top: 30px;
+    }
+    
+    .divider {
+        margin: 25px 0;
+        display: flex;
+        align-items: center;
+        text-align: center;
+        color: #666;
+    }
+    
+    .divider::before,
+    .divider::after {
+        content: '';
+        flex: 1;
+        border-bottom: 1px solid #e1e1e1;
+    }
+    
+    .divider span {
+        padding: 0 15px;
+        font-size: 0.9rem;
+    }
+    
+    .back-link {
+        margin-top: 25px;
+        color: var(--text-color);
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+    }
+    
+    .back-link:hover {
+        color: var(--primary-color);
+        transform: translateX(-5px);
+    }
+    
+    .back-link i {
+        margin-right: 5px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="login-container">
+    <div class="login-card">
+        <div class="welcome-text">
+            <h1>Hello Student</h1>
+            <p>Welcome to Online Examination System</p>
+        </div>
+        
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                {% render_field form.username class="form-control" placeholder="Username" %}
+                <span class="input-icon"><i class="fas fa-user"></i></span>
+            </div>
+            <div class="form-group">
+                {% render_field form.password class="form-control" placeholder="Password" type="password" %}
+                <span class="input-icon"><i class="fas fa-lock"></i></span>
+            </div>
+            
+            <div class="action-buttons">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Login Now
+                </button>
+                <a href="/student/studentsignup" class="btn btn-secondary">
+                    <i class="fas fa-user-plus"></i>
+                    Create Your Account
+                </a>
+            </div>
+        </form>
+        
+        <a href="/" class="back-link">
+            <i class="fas fa-arrow-left"></i>
+            Back to Home
+        </a>
+    </div>
+</div>
+{% endblock %}

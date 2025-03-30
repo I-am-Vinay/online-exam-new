@@ -1,0 +1,123 @@
+{% extends 'student/studentbase.html' %}
+{% block content %}
+{%load static%}
+
+<div class="container py-5">
+    <div class="marks-header mb-4">
+        <h2 class="text-gradient">My Academic Performance</h2>
+        <p class="text-muted">View your examination results and track your progress</p>
+    </div>
+
+    <div class="row g-4">
+        {% for t in courses %}
+        <div class="col-md-6 col-lg-4">
+            <div class="marks-card">
+                <div class="marks-card-content">
+                    <div class="marks-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h4 class="marks-title">{{t.course_name}}</h4>
+                    <div class="marks-actions">
+                        <a href="{% url 'check-marks' t.id %}" class="btn btn-primary">
+                            <i class="fas fa-chart-bar me-2"></i>
+                            View Results
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+    .marks-header {
+        text-align: center;
+    }
+    
+    .text-gradient {
+        background: linear-gradient(120deg, var(--primary-color), var(--secondary-color));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+
+    .marks-card {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        transition: all 0.3s ease;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    .marks-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+    }
+
+    .marks-card-content {
+        padding: 2rem;
+        text-align: center;
+    }
+
+    .marks-icon {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(120deg, var(--primary-color), var(--secondary-color));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+    }
+
+    .marks-icon i {
+        font-size: 24px;
+        color: white;
+    }
+
+    .marks-title {
+        color: var(--secondary-color);
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        min-height: 2.5em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .marks-actions {
+        margin-top: auto;
+    }
+
+    .btn-primary {
+        padding: 0.75rem 2rem;
+        border-radius: 50px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        background: linear-gradient(120deg, var(--primary-color), var(--secondary-color));
+        border: none;
+        transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(var(--primary-rgb), 0.3);
+    }
+
+    @media (max-width: 768px) {
+        .container {
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+        }
+        
+        .marks-card-content {
+            padding: 1.5rem;
+        }
+    }
+</style>
+{% endblock content %}

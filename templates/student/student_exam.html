@@ -1,0 +1,123 @@
+{% extends 'student/studentbase.html' %}
+{% block content %}
+{%load static%}
+
+<div class="container py-5">
+    <div class="exam-header mb-4">
+        <h2 class="text-gradient">Available Examinations</h2>
+        <p class="text-muted">Select an examination to begin your assessment</p>
+    </div>
+
+    <div class="row g-4">
+        {% for t in courses %}
+        <div class="col-md-6 col-lg-4">
+            <div class="exam-card">
+                <div class="exam-card-content">
+                    <div class="exam-icon">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <h4 class="exam-title">{{t.course_name}}</h4>
+                    <div class="exam-actions">
+                        <a href="{% url 'take-exam' t.id %}" class="btn btn-primary">
+                            <i class="fas fa-pen-alt me-2"></i>
+                            Start Exam
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+    .exam-header {
+        text-align: center;
+    }
+    
+    .text-gradient {
+        background: linear-gradient(120deg, var(--primary-color), var(--secondary-color));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+
+    .exam-card {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        transition: all 0.3s ease;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    .exam-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+    }
+
+    .exam-card-content {
+        padding: 2rem;
+        text-align: center;
+    }
+
+    .exam-icon {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(120deg, var(--primary-color), var(--secondary-color));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+    }
+
+    .exam-icon i {
+        font-size: 24px;
+        color: white;
+    }
+
+    .exam-title {
+        color: var(--secondary-color);
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        min-height: 2.5em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .exam-actions {
+        margin-top: auto;
+    }
+
+    .btn-primary {
+        padding: 0.75rem 2rem;
+        border-radius: 50px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        background: linear-gradient(120deg, var(--primary-color), var(--secondary-color));
+        border: none;
+        transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(var(--primary-rgb), 0.3);
+    }
+
+    @media (max-width: 768px) {
+        .container {
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+        }
+        
+        .exam-card-content {
+            padding: 1.5rem;
+        }
+    }
+</style>
+{% endblock content %}

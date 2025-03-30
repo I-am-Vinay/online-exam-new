@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: #4a90e2;
+      --primary-rgb: 74, 144, 226;
+      --secondary-color: #2c3e50;
+      --accent-color: #e74c3c;
+      --success-color: #2ecc71;
+      --text-color: #333;
+      --light-bg: #f8f9fa;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--light-bg);
+    }
+
+    header {
+      position: fixed;
+      padding: 15px 30px;
+      width: 100%;
+      z-index: 1000;
+      background: white;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .left_area h3 {
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--secondary-color);
+    }
+
+    .left_area span {
+      color: var(--primary-color);
+    }
+
+    .logout_btn {
+      padding: 8px 20px;
+      background: linear-gradient(120deg, var(--primary-color), var(--secondary-color));
+      text-decoration: none;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: white;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logout_btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(var(--primary-rgb), 0.3);
+    }
+
+    .sidebar {
+      background: white;
+      margin-top: 70px;
+      padding-top: 30px;
+      position: fixed;
+      left: 0;
+      width: 250px;
+      height: calc(100vh - 70px);
+      transition: all 0.3s ease;
+      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar-header {
+      text-align: center;
+      padding: 20px;
+      background: linear-gradient(120deg, var(--primary-color), var(--secondary-color));
+      color: white;
+      margin: -30px 0 20px;
+    }
+
+    .portal-icon {
+      width: 80px;
+      height: 80px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 15px;
+      font-size: 2rem;
+    }
+
+    .welcome-text {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    .role-badge {
+      display: inline-block;
+      padding: 5px 15px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50px;
+      font-size: 0.9rem;
+      margin-top: 10px;
+    }
+
+    .sidebar-menu {
+      flex-grow: 1;
+      padding: 20px 0;
+    }
+
+    .sidebar a {
+      color: var(--secondary-color);
+      display: flex;
+      align-items: center;
+      padding: 15px 30px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      border-left: 3px solid transparent;
+      font-weight: 500;
+    }
+
+    .sidebar a:hover {
+      background: rgba(var(--primary-rgb), 0.05);
+      color: var(--primary-color);
+      border-left-color: var(--primary-color);
+    }
+
+    .sidebar a.active {
+      background: rgba(var(--primary-rgb), 0.1);
+      color: var(--primary-color);
+      border-left-color: var(--primary-color);
+    }
+
+    .sidebar i {
+      width: 25px;
+      margin-right: 10px;
+      font-size: 1.1rem;
+    }
+
+    .content {
+      margin-left: 250px;
+      padding: 90px 20px 20px;
+      min-height: 100vh;
+      background: var(--light-bg);
+      transition: all 0.3s ease;
+    }
+
+    #check {
+      display: none;
+    }
+
+    label #sidebar_btn {
+      font-size: 1.2rem;
+      color: var(--secondary-color);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+    }
+
+    label #sidebar_btn:hover {
+      color: var(--primary-color);
+      background: rgba(var(--primary-rgb), 0.1);
+    }
+
+    #check:checked ~ .sidebar {
+      left: -250px;
+    }
+
+    #check:checked ~ .content {
+      margin-left: 0;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        left: -250px;
+      }
+      .content {
+        margin-left: 0;
+        padding-top: 80px;
+      }
+      #check:checked ~ .sidebar {
+        left: 0;
+      }
+      header {
+        padding: 10px 20px;
+      }
+      .left_area h3 {
+        font-size: 1.2rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <input type="checkbox" id="check">
+  
+  <!-- Header -->
+  <header>
+    <div class="header-content">
+      <label for="check">
+        <i class="fas fa-bars" id="sidebar_btn"></i>
+      </label>
+      <div class="left_area">
+        <h3>Online Examination</h3>
+      </div>
+      <div class="right_area">
+        <a href="/logout" class="logout_btn">
+          <i class="fas fa-sign-out-alt"></i>
+          Logout
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <div class="portal-icon">
+        <i class="fas fa-user-graduate"></i>
+      </div>
+      <h4 class="welcome-text">Welcome, {{request.user.first_name}}!</h4>
+      <span class="role-badge">Student Portal</span>
+    </div>
+
+    <div class="sidebar-menu">
+      <a href="/student/student-dashboard" class="{% if request.path == '/student/student-dashboard' %}active{% endif %}">
+        <i class="fas fa-tachometer-alt"></i>
+        <span>Dashboard</span>
+      </a>
+      <a href="/student/student-exam" class="{% if request.path == '/student/student-exam' %}active{% endif %}">
+        <i class="fas fa-book"></i>
+        <span>Exams</span>
+      </a>
+      <a href="/student/student-marks" class="{% if request.path == '/student/student-marks' %}active{% endif %}">
+        <i class="fas fa-chart-bar"></i>
+        <span>Marks</span>
+      </a>
+      <a href="/student/logout" class="logout-link">
+        <i class="fas fa-sign-out-alt"></i>
+        <span>Logout</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="content">
+    {% block content %}{% endblock %}
+    {% include "exam/footer.html" %}
+  </div>
+</body>
+</html>

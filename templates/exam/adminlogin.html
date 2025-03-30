@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+{% load widget_tweaks %}
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - Online Examination System</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style media="screen">
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background: #2c3e50;
+            background: linear-gradient(135deg, #c0392b, #2c3e50);
+            height: 100vh;
+        }
+        
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 80vh;
+        }
+        
+        .login-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+            width: 400px;
+            padding: 40px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        
+        .login-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .login-icon {
+            font-size: 60px;
+            color: #c0392b;
+            margin-bottom: 20px;
+        }
+        
+        .login-title {
+            margin-bottom: 30px;
+            color: #333;
+            font-weight: 600;
+        }
+        
+        .form-group {
+            position: relative;
+            margin-bottom: 25px;
+        }
+        
+        .form-control {
+            padding: 12px 40px 12px 15px;
+            border-radius: 50px;
+            border: 1px solid #ddd;
+            transition: all 0.3s;
+            box-shadow: none;
+        }
+        
+        .form-control:focus {
+            border-color: #c0392b;
+            box-shadow: 0 0 8px rgba(192, 57, 43, 0.4);
+        }
+        
+        .input-icon {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            color: #7f8c8d;
+        }
+        
+        .login-btn {
+            background: #c0392b;
+            border: none;
+            border-radius: 50px;
+            padding: 12px 30px;
+            color: white;
+            font-weight: 600;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        .login-btn:hover {
+            background: #a33025;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .forgot-password {
+            margin-top: 20px;
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+        
+        .forgot-password a {
+            color: #c0392b;
+            text-decoration: none;
+        }
+        
+        .forgot-password a:hover {
+            color: #a33025;
+            text-decoration: underline;
+        }
+        
+        .back-to-home {
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .back-to-home a {
+            color: #c0392b;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .back-to-home a:hover {
+            color: #a33025;
+        }
+    </style>
+  </head>
+  <body>
+    {% include "exam/navbar.html" %}
+    
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-icon">
+                <i class="fas fa-user-shield"></i>
+            </div>
+            <h2 class="login-title">Admin Login</h2>
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    {% render_field form.username class="form-control" autocomplete="off" placeholder="Username" %}
+                    <span class="input-icon"><i class="fas fa-user"></i></span>
+                </div>
+                <div class="form-group">
+                    {% render_field form.password class="form-control" autocomplete="off" placeholder="Password" %}
+                    <span class="input-icon"><i class="fas fa-lock"></i></span>
+                </div>
+                <button type="submit" class="login-btn">
+                    <i class="fas fa-sign-in-alt mr-2"></i> LOGIN
+                </button>
+            </form>
+            <div class="back-to-home">
+                <a href="/"><i class="fas fa-home mr-1"></i> Back to Home</a>
+            </div>
+        </div>
+    </div>
+    
+    {% include "exam/footer.html" %}
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </body>
+</html>

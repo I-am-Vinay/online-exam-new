@@ -1,0 +1,143 @@
+{% extends 'exam/adminbase.html' %}
+{% block content %}
+<style>
+  .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    max-width: 600px;
+    margin: 0 auto 2rem;
+  }
+
+  .stats-card {
+    background: white;
+    border-radius: 15px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stats-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  }
+
+  .stats-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, rgba(var(--primary-rgb), 0.05), rgba(var(--primary-rgb), 0));
+    z-index: 0;
+  }
+
+  .stats-content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .stats-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+
+  .stats-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: white;
+    background: linear-gradient(120deg, var(--primary-color), var(--secondary-color));
+  }
+
+  .stats-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--secondary-color);
+    margin: 0;
+  }
+
+  .stats-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin: 0.5rem 0;
+  }
+
+  .stats-description {
+    font-size: 0.9rem;
+    color: #666;
+    margin: 0;
+  }
+
+  .stats-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--primary-color);
+    background: rgba(var(--primary-rgb), 0.1);
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+
+  .stats-link:hover {
+    background: rgba(var(--primary-rgb), 0.15);
+    transform: translateX(5px);
+  }
+
+  .page-header {
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  .page-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--secondary-color);
+    margin: 0 0 0.5rem;
+  }
+
+  .page-subtitle {
+    font-size: 1rem;
+    color: #666;
+    margin: 0;
+  }
+</style>
+
+<div class="page-header">
+  <h1 class="page-title">Question Management</h1>
+  <p class="page-subtitle">Monitor and manage questions created by teachers</p>
+</div>
+
+<div class="stats-grid">
+  <!-- View Questions Card -->
+  <div class="stats-card">
+    <div class="stats-content">
+      <div class="stats-header">
+        <h3 class="stats-title">Manage Questions</h3>
+        <div class="stats-icon">
+          <i class="fas fa-question-circle"></i>
+        </div>
+      </div>
+      <div class="stats-value">View Questions</div>
+      <p class="stats-description">Review and manage questions created by teachers</p>
+      <a href="admin-view-question" class="stats-link">
+        <span>View Questions</span>
+        <i class="fas fa-arrow-right"></i>
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock content %}

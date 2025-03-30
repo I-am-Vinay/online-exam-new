@@ -1,0 +1,147 @@
+{% extends 'student/studentbase.html' %}
+{% block content %}
+{%load static%}
+
+<div class="container py-5">
+    <div class="results-header mb-4">
+        <h2 class="text-gradient">Academic Results</h2>
+        <p class="text-muted">Select a course to view your performance details</p>
+    </div>
+
+    <div class="row g-4">
+        {% for t in courses %}
+        <div class="col-md-6 col-lg-4">
+            <div class="result-card">
+                <div class="result-icon">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <h3 class="course-title">{{t.course_name}}</h3>
+                <div class="result-actions">
+                    <a href="{% url 'check-marks' t.id %}" class="view-result-btn">
+                        <i class="fas fa-chart-bar me-2"></i>
+                        View Performance
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+    .results-header {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+    
+    .text-gradient {
+        background: linear-gradient(120deg, var(--primary-color), var(--secondary-color));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+
+    .result-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        padding: 2rem;
+        height: 100%;
+        text-align: center;
+        transition: all 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+    }
+
+    .result-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+    }
+
+    .result-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(120deg, var(--primary-color), var(--secondary-color));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 0.5rem;
+    }
+
+    .result-icon i {
+        font-size: 32px;
+        color: white;
+    }
+
+    .course-title {
+        color: var(--secondary-color);
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin: 0;
+        flex-grow: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        min-height: 2.5em;
+    }
+
+    .result-actions {
+        width: 100%;
+    }
+
+    .view-result-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        background: linear-gradient(120deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        padding: 0.8rem 1.5rem;
+        border-radius: 50px;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        width: 100%;
+    }
+
+    .view-result-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(var(--primary-rgb), 0.3);
+        color: white;
+    }
+
+    .view-result-btn i {
+        font-size: 1.1rem;
+    }
+
+    @media (max-width: 768px) {
+        .result-card {
+            padding: 1.5rem;
+        }
+
+        .result-icon {
+            width: 60px;
+            height: 60px;
+        }
+
+        .result-icon i {
+            font-size: 24px;
+        }
+
+        .view-result-btn {
+            padding: 0.7rem 1.2rem;
+        }
+    }
+
+    @media (min-width: 992px) {
+        .container {
+            max-width: 1200px;
+        }
+    }
+</style>
+{% endblock content %}

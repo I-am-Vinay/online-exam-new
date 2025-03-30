@@ -1,0 +1,302 @@
+{% extends 'student/studentbase.html' %} {% block content %} {%load static%}
+
+<div class="exam-container">
+    <div class="exam-header">
+        <h2 class="course-title">{{course.course_name}}</h2>
+        <div class="exam-timer" id="examTimer">
+            <i class="fas fa-clock"></i>
+            <span id="timer">Time Remaining</span>
+        </div>
+    </div>
+
+    <form class="exam-form" autocomplete="off" onsubmit="return saveAns()" action="/student/calculate-marks" method="POST">
+        {% csrf_token %}
+        
+        {% for q in questions%}
+        <div class="question-card">
+            <div class="question-header">
+                <div class="question-number">Question {{ forloop.counter }}</div>
+                <div class="question-marks">[{{q.marks}} Marks]</div>
+            </div>
+            
+            <div class="question-content">
+                <p class="question-text">{{q.question}}</p>
+
+                {% if q.question_type == 'mcq' %}
+                <div class="mcq-options">
+                    <label class="option-label">
+                        <input type="radio" name="{{ forloop.counter }}" value="Option1" required>
+                        <span class="option-text">{{q.option1}}</span>
+                    </label>
+
+                    <label class="option-label">
+                        <input type="radio" name="{{ forloop.counter }}" value="Option2">
+                        <span class="option-text">{{q.option2}}</span>
+                    </label>
+
+                    <label class="option-label">
+                        <input type="radio" name="{{ forloop.counter }}" value="Option3">
+                        <span class="option-text">{{q.option3}}</span>
+                    </label>
+
+                    <label class="option-label">
+                        <input type="radio" name="{{ forloop.counter }}" value="Option4">
+                        <span class="option-text">{{q.option4}}</span>
+                    </label>
+                </div>
+                {% else %}
+                <div class="saq-answer">
+                    <textarea 
+                        class="answer-textarea" 
+                        name="{{ forloop.counter }}_saq" 
+                        rows="4"
+                        placeholder="Enter your answer here (Maximum {{ q.max_words }} words)"
+                        required
+                        onkeyup="checkWordCount(this, {{ q.max_words }})"></textarea>
+                    <div class="word-count">
+                        <span class="current-words">0</span> / <span class="max-words">{{ q.max_words }}</span> words
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+
+        <div class="exam-footer">
+            <button type="submit" class="submit-btn">
+                <i class="fas fa-paper-plane"></i>
+                Submit Answers
+            </button>
+        </div>
+    </form>
+</div>
+
+<style>
+    .exam-container {
+        max-width: 900px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+    }
+
+    .exam-header {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        margin-bottom: 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: sticky;
+        top: 70px;
+        z-index: 100;
+    }
+
+    .course-title {
+        color: var(--secondary-color);
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin: 0;
+    }
+
+    .exam-timer {
+        background: rgba(var(--primary-rgb), 0.1);
+        padding: 0.5rem 1rem;
+        border-radius: 50px;
+        color: var(--primary-color);
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .question-card {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        margin-bottom: 2rem;
+        overflow: hidden;
+    }
+
+    .question-header {
+        background: linear-gradient(120deg, var(--primary-color), var(--secondary-color));
+        padding: 1rem 1.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: white;
+    }
+
+    .question-number {
+        font-weight: 600;
+        font-size: 1.1rem;
+    }
+
+    .question-marks {
+        background: rgba(255,255,255,0.2);
+        padding: 0.3rem 1rem;
+        border-radius: 50px;
+        font-size: 0.9rem;
+    }
+
+    .question-content {
+        padding: 1.5rem;
+    }
+
+    .question-text {
+        font-size: 1.1rem;
+        color: var(--secondary-color);
+        margin-bottom: 1.5rem;
+        line-height: 1.6;
+    }
+
+    .mcq-options {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .option-label {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        padding: 1rem;
+        background: #f8f9fa;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .option-label:hover {
+        background: rgba(var(--primary-rgb), 0.05);
+    }
+
+    .option-label input[type="radio"] {
+        margin-top: 0.3rem;
+    }
+
+    .option-text {
+        flex: 1;
+        color: var(--secondary-color);
+    }
+
+    .saq-answer {
+        background: #f8f9fa;
+        padding: 1rem;
+        border-radius: 10px;
+    }
+
+    .answer-textarea {
+        width: 100%;
+        padding: 1rem;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        resize: vertical;
+        min-height: 120px;
+        font-size: 1rem;
+        line-height: 1.6;
+        color: var(--secondary-color);
+    }
+
+    .answer-textarea:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.1);
+    }
+
+    .word-count {
+        margin-top: 0.5rem;
+        text-align: right;
+        color: #666;
+        font-size: 0.9rem;
+    }
+
+    .word-count.exceeded {
+        color: #dc3545;
+    }
+
+    .exam-footer {
+        position: sticky;
+        bottom: 20px;
+        background: white;
+        padding: 1rem;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        text-align: center;
+        margin-top: 2rem;
+    }
+
+    .submit-btn {
+        background: linear-gradient(120deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        border: none;
+        padding: 1rem 3rem;
+        border-radius: 50px;
+        font-size: 1.1rem;
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .submit-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(var(--primary-rgb), 0.3);
+    }
+
+    @media (max-width: 768px) {
+        .exam-header {
+            flex-direction: column;
+            gap: 1rem;
+            text-align: center;
+            top: 60px;
+        }
+
+        .question-header {
+            flex-direction: column;
+            gap: 0.5rem;
+            text-align: center;
+        }
+
+        .option-label {
+            padding: 0.8rem;
+        }
+    }
+</style>
+
+<script>
+    function saveAns() {
+        {% for q in questions %}
+        {% if q.question_type == 'mcq' %}
+        var ans{{ forloop.counter }} = document.querySelector('input[name="{{ forloop.counter }}"]:checked');
+        if(ans{{ forloop.counter }}) {
+            document.cookie = "{{ forloop.counter }}=" + encodeURIComponent(ans{{ forloop.counter }}.value) + "; path=/; max-age=3600";
+        }
+        {% else %}
+        var saqAns{{ forloop.counter }} = document.querySelector('textarea[name="{{ forloop.counter }}_saq"]');
+        if(saqAns{{ forloop.counter }}) {
+            document.cookie = "{{ forloop.counter }}_saq=" + encodeURIComponent(saqAns{{ forloop.counter }}.value) + "; path=/; max-age=3600";
+        }
+        {% endif %}
+        {% endfor %}
+        return true;
+    }
+
+    function checkWordCount(textarea, maxWords) {
+        const text = textarea.value.trim();
+        const wordCount = text ? text.split(/\s+/).length : 0;
+        const wordCountElement = textarea.parentElement.querySelector('.word-count');
+        const currentWordsElement = wordCountElement.querySelector('.current-words');
+        
+        currentWordsElement.textContent = wordCount;
+        
+        if (wordCount > maxWords) {
+            wordCountElement.classList.add('exceeded');
+        } else {
+            wordCountElement.classList.remove('exceeded');
+        }
+    }
+</script>
+{% endblock content %}

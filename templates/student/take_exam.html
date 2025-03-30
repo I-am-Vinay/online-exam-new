@@ -1,0 +1,237 @@
+{% extends 'student/studentbase.html' %}
+{% block content %}
+{%load static%}
+
+<div class="container py-5">
+    <div class="exam-info-card">
+        <div class="exam-header">
+            <h2 class="text-gradient mb-4">{{course.course_name}} Examination</h2>
+            <div class="exam-stats">
+                <div class="stat-item">
+                    <i class="fas fa-question-circle"></i>
+                    <span class="stat-label">Questions</span>
+                    <span class="stat-value">{{total_questions}}</span>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-star"></i>
+                    <span class="stat-label">Total Marks</span>
+                    <span class="stat-value">{{total_marks}}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="exam-rules mt-5">
+            <h3><i class="fas fa-clipboard-list me-2"></i>Examination Rules</h3>
+            <div class="rules-list">
+                <div class="rule-item">
+                    <span class="rule-number">1</span>
+                    <p>All questions are MCQ (multiple choice question)</p>
+                </div>
+                <div class="rule-item important">
+                    <span class="rule-number">2</span>
+                    <p>Only one choice is correct among the given options</p>
+                </div>
+                <div class="rule-item">
+                    <span class="rule-number">3</span>
+                    <p>Every question carries different marks</p>
+                </div>
+                <div class="rule-item">
+                    <span class="rule-number">4</span>
+                    <p>Try to answer ASAP</p>
+                </div>
+                <div class="rule-item warning">
+                    <span class="rule-number">5</span>
+                    <p>If you PRESS refresh or go back to the previous page, there will be a new question and your current question will be counted as attempted</p>
+                </div>
+                <div class="rule-item">
+                    <span class="rule-number">6</span>
+                    <p>Questions are presented randomly</p>
+                </div>
+                <div class="rule-item">
+                    <span class="rule-number">7</span>
+                    <p>You will be able to view marks immediately after submitting each answer</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="exam-footer">
+            <p class="good-luck">Best Of Luck, Students!</p>
+            <a href="{% url 'start-exam' course.id %}" class="btn btn-primary btn-lg">
+                <i class="fas fa-door-open me-2"></i>
+                Enter Examination
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+    .exam-info-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        padding: 3rem;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .exam-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .text-gradient {
+        background: linear-gradient(120deg, var(--primary-color), var(--secondary-color));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: 600;
+    }
+
+    .exam-stats {
+        display: flex;
+        justify-content: center;
+        gap: 3rem;
+        margin-top: 2rem;
+    }
+
+    .stat-item {
+        text-align: center;
+        padding: 1rem 2rem;
+        background: rgba(var(--primary-rgb), 0.05);
+        border-radius: 15px;
+        min-width: 180px;
+    }
+
+    .stat-item i {
+        font-size: 1.5rem;
+        color: var(--primary-color);
+        margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+        display: block;
+        color: var(--secondary-color);
+        font-size: 0.9rem;
+        font-weight: 500;
+        margin: 0.5rem 0;
+    }
+
+    .stat-value {
+        display: block;
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: var(--primary-color);
+    }
+
+    .exam-rules {
+        background: #f8f9fa;
+        border-radius: 15px;
+        padding: 2rem;
+    }
+
+    .exam-rules h3 {
+        color: var(--secondary-color);
+        font-size: 1.3rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+    }
+
+    .rules-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .rule-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        padding: 1rem;
+        background: white;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+    }
+
+    .rule-item:hover {
+        transform: translateX(5px);
+    }
+
+    .rule-number {
+        background: var(--primary-color);
+        color: white;
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.9rem;
+        font-weight: 600;
+        flex-shrink: 0;
+    }
+
+    .rule-item p {
+        margin: 0;
+        font-size: 1rem;
+        line-height: 1.5;
+    }
+
+    .rule-item.important {
+        background: rgba(var(--primary-rgb), 0.1);
+    }
+
+    .rule-item.warning {
+        background: rgba(255, 152, 0, 0.1);
+    }
+
+    .exam-footer {
+        text-align: center;
+        margin-top: 2rem;
+        padding-top: 2rem;
+        border-top: 1px solid #eee;
+    }
+
+    .good-luck {
+        color: var(--secondary-color);
+        font-size: 1.1rem;
+        font-weight: 500;
+        margin-bottom: 1.5rem;
+    }
+
+    .btn-primary {
+        padding: 1rem 3rem;
+        border-radius: 50px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        background: linear-gradient(120deg, var(--primary-color), var(--secondary-color));
+        border: none;
+        transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(var(--primary-rgb), 0.3);
+    }
+
+    @media (max-width: 768px) {
+        .exam-info-card {
+            padding: 1.5rem;
+        }
+
+        .exam-stats {
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .stat-item {
+            min-width: auto;
+        }
+
+        .exam-rules {
+            padding: 1.5rem;
+        }
+    }
+</style>
+{% endblock content %}

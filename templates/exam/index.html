@@ -1,0 +1,578 @@
+{% extends "exam/base.html" %}
+{% load static %}
+
+{% block title %}Welcome - Online Examination System{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary: #6366f1;
+        --secondary: #8b5cf6;
+        --accent: #ec4899;
+        --background: #0f172a;
+        --surface: #1e293b;
+        --text: #f8fafc;
+        --card-bg: rgba(255, 255, 255, 0.03);
+        --border: rgba(255, 255, 255, 0.06);
+    }
+
+    .landing-wrapper {
+        min-height: 100vh;
+        background: var(--background);
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Animated Background */
+    .gradient-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: 
+            radial-gradient(circle at 0% 0%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+            radial-gradient(circle at 100% 0%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+            radial-gradient(circle at 100% 100%, rgba(236, 72, 153, 0.15) 0%, transparent 50%),
+            radial-gradient(circle at 0% 100%, rgba(99, 102, 241, 0.15) 0%, transparent 50%);
+        filter: blur(80px);
+        z-index: 0;
+    }
+
+    .noise-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJhIiB4PSIwIiB5PSIwIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iLjc1IiBzdGl0Y2hUaWxlcz0ic3RpdGNoIi8+PC9maWx0ZXI+PHJlY3Qgd2lkdGg9IjMwMCIgaGVpZ2h0PSIzMDAiIGZpbHRlcj0idXJsKCNhKSIgb3BhY2l0eT0iLjA1Ii8+PC9zdmc+');
+        opacity: 0.4;
+        z-index: 1;
+    }
+
+    /* Hero Section */
+    .hero-section {
+        position: relative;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        padding: 4rem 2rem;
+        color: var(--text);
+        z-index: 2;
+    }
+
+    .hero-content {
+        max-width: 1400px;
+        margin: 0 auto;
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr;
+        text-align: center;
+        padding: 0 2rem;
+    }
+
+    .hero-text {
+        opacity: 0;
+        animation: fadeIn 1s ease forwards;
+        margin: 0 auto;
+        max-width: 1200px;
+    }
+
+    .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        background: linear-gradient(to right, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));
+        border: 1px solid var(--border);
+        padding: 0.5rem 1rem;
+        border-radius: 50px;
+        margin-bottom: 2rem;
+        font-size: 0.875rem;
+        color: var(--accent);
+        backdrop-filter: blur(10px);
+    }
+
+    .hero-badge i {
+        margin-right: 0.5rem;
+    }
+
+    .hero-title {
+        font-size: 4rem;
+        font-weight: 800;
+        line-height: 1.1;
+        margin-bottom: 1.5rem;
+        background: linear-gradient(to right, #fff, rgba(255, 255, 255, 0.7));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        position: relative;
+    }
+
+    .hero-title::after {
+        content: attr(data-text);
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: -1;
+        background: linear-gradient(to right, var(--primary), var(--secondary));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        opacity: 0.3;
+        transform: translateY(5px);
+        filter: blur(8px);
+    }
+
+    .hero-subtitle {
+        font-size: 1.25rem;
+        line-height: 1.8;
+        margin-bottom: 2.5rem;
+        color: rgba(248, 250, 252, 0.8);
+    }
+
+    /* Portal Cards */
+    .portals-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+        perspective: 1000px;
+    }
+
+    .portal-card {
+        background: var(--card-bg);
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        padding: 2rem;
+        text-align: center;
+        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        transform-style: preserve-3d;
+        cursor: pointer;
+        text-decoration: none;
+        color: var(--text);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .portal-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+        transform: translateX(-100%);
+        transition: transform 0.6s;
+    }
+
+    .portal-card:hover::before {
+        transform: translateX(100%);
+    }
+
+    .portal-card:hover {
+        transform: translateY(-10px) rotateX(10deg) rotateY(10deg);
+        border-color: rgba(255, 255, 255, 0.2);
+        box-shadow: 
+            0 0 0 1px rgba(255, 255, 255, 0.1),
+            0 20px 40px -20px rgba(0, 0, 0, 0.5);
+    }
+
+    .portal-icon {
+        width: 64px;
+        height: 64px;
+        background: linear-gradient(45deg, var(--primary), var(--secondary));
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        font-size: 1.5rem;
+        color: white;
+        position: relative;
+    }
+
+    .portal-icon::after {
+        content: '';
+        position: absolute;
+        inset: -2px;
+        background: inherit;
+        border-radius: inherit;
+        filter: blur(8px);
+        opacity: 0.4;
+        z-index: -1;
+    }
+
+    .portal-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+        background: linear-gradient(to right, #fff, rgba(255, 255, 255, 0.8));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .portal-desc {
+        font-size: 0.9rem;
+        color: rgba(248, 250, 252, 0.6);
+        margin-bottom: 1.5rem;
+    }
+
+    .portal-action {
+        font-size: 0.875rem;
+        color: var(--accent);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+
+    /* Features Section */
+    .features-section {
+        position: relative;
+        padding: 8rem 2rem;
+        z-index: 2;
+    }
+
+    .section-title {
+        text-align: center;
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        background: linear-gradient(to right, #fff, rgba(255, 255, 255, 0.8));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .section-subtitle {
+        text-align: center;
+        font-size: 1.125rem;
+        color: rgba(248, 250, 252, 0.6);
+        max-width: 600px;
+        margin: 0 auto 4rem;
+    }
+
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    .feature-card {
+        background: var(--card-bg);
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        padding: 2rem;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .feature-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.03), transparent);
+        transform: translateX(-100%);
+        transition: transform 0.6s;
+    }
+
+    .feature-card:hover::before {
+        transform: translateX(100%);
+    }
+
+    .feature-card:hover {
+        transform: translateY(-5px);
+        border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .feature-icon {
+        width: 48px;
+        height: 48px;
+        background: linear-gradient(45deg, var(--primary), var(--secondary));
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1.5rem;
+        font-size: 1.25rem;
+        color: white;
+        position: relative;
+    }
+
+    .feature-icon::after {
+        content: '';
+        position: absolute;
+        inset: -2px;
+        background: inherit;
+        border-radius: inherit;
+        filter: blur(8px);
+        opacity: 0.4;
+        z-index: -1;
+    }
+
+    .feature-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        color: var(--text);
+    }
+
+    .feature-description {
+        color: rgba(248, 250, 252, 0.6);
+        line-height: 1.6;
+    }
+
+    /* Stats Section */
+    .stats-section {
+        position: relative;
+        padding: 6rem 2rem;
+        z-index: 2;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .stat-card {
+        background: var(--card-bg);
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        padding: 2rem;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .stat-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.03), transparent);
+        transform: translateX(-100%);
+        transition: transform 0.6s;
+    }
+
+    .stat-card:hover::before {
+        transform: translateX(100%);
+    }
+
+    .stat-number {
+        font-size: 3rem;
+        font-weight: 700;
+        background: linear-gradient(to right, var(--primary), var(--secondary));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 0.5rem;
+        font-feature-settings: "tnum";
+        font-variant-numeric: tabular-nums;
+    }
+
+    .stat-label {
+        color: rgba(248, 250, 252, 0.6);
+        font-size: 1rem;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes float {
+        0%, 100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-20px);
+        }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+        .hero-content {
+            grid-template-columns: 1fr;
+            text-align: center;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+        }
+
+        .portals-grid {
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        }
+
+        .stats-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 768px) {
+        .hero-title {
+            font-size: 2.5rem;
+        }
+
+        .stats-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: var(--background);
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: var(--surface);
+        border-radius: 5px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.1);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="landing-wrapper">
+    <div class="gradient-bg"></div>
+    <div class="noise-overlay"></div>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1 class="hero-title" data-text="Elevate Your Educational Journey">Elevate Your Educational Journey</h1>
+                <p class="hero-subtitle">Experience the next generation of online examination with our state-of-the-art platform. Secure, intelligent, and designed for the modern era of learning.</p>
+                
+                <div class="portals-grid">
+                    <a href="/student/studentlogin" class="portal-card">
+                        <div class="portal-icon">
+                            <i class="fas fa-user-graduate"></i>
+                        </div>
+                        <h3 class="portal-title">Student Portal</h3>
+                        <p class="portal-desc">Start your learning journey with personalized assessments</p>
+                        <span class="portal-action">
+                            Login <i class="fas fa-arrow-right"></i>
+                        </span>
+                    </a>
+                    
+                    <a href="/teacher/teacherlogin" class="portal-card">
+                        <div class="portal-icon">
+                            <i class="fas fa-chalkboard-teacher"></i>
+                        </div>
+                        <h3 class="portal-title">Teacher Portal</h3>
+                        <p class="portal-desc">Create and manage examinations with powerful tools</p>
+                        <span class="portal-action">
+                            Login <i class="fas fa-arrow-right"></i>
+                        </span>
+                    </a>
+                    
+                    <a href="/adminclick" class="portal-card">
+                        <div class="portal-icon">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                        <h3 class="portal-title">Admin Portal</h3>
+                        <p class="portal-desc">Comprehensive control over your institution</p>
+                        <span class="portal-action">
+                            Access Panel <i class="fas fa-arrow-right"></i>
+                        </span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+  
+</div>
+
+<script>
+// Animated counter for statistics
+function animateValue(element, start, end, duration) {
+    const range = end - start;
+    const increment = range / (duration / 16);
+    let current = start;
+    
+    const timer = setInterval(() => {
+        current += increment;
+        if (current >= end) {
+            current = end;
+            clearInterval(timer);
+        }
+        element.textContent = Math.floor(current).toLocaleString() + (element.dataset.value.includes('+') ? '+' : '%');
+    }, 16);
+}
+
+// Intersection Observer for animations
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            if (entry.target.classList.contains('stat-number')) {
+                const value = parseInt(entry.target.dataset.value);
+                animateValue(entry.target, 0, value, 2000);
+            }
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+            observer.unobserve(entry.target);
+        }
+    });
+}, {
+    threshold: 0.1
+});
+
+// Observe elements for animation
+document.querySelectorAll('.feature-card, .stat-card, .portal-card').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    observer.observe(el);
+});
+
+document.querySelectorAll('.stat-number').forEach(el => {
+    observer.observe(el);
+});
+
+// 3D card effect
+document.querySelectorAll('.portal-card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        
+        const rotateX = (y - centerY) / 10;
+        const rotateY = (centerX - x) / 10;
+        
+        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(10px)`;
+    });
+    
+    card.addEventListener('mouseleave', () => {
+        card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateZ(0)';
+    });
+});
+</script>
+{% endblock %}

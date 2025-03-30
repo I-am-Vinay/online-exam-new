@@ -1,0 +1,210 @@
+{% extends 'teacher/teacherbase.html' %}
+{% block content %}
+
+<style>
+    .view-courses {
+        padding: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .courses-header {
+        background: linear-gradient(135deg, #4A90E2, #5468FF);
+        padding: 2rem;
+        border-radius: 16px;
+        color: white;
+        margin-bottom: 2rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .courses-header::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 200%;
+        height: 200%;
+        background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='%23ffffff10' d='M42.7,-62.9C50.9,-54.5,50.1,-36.6,51.7,-21.5C53.4,-6.4,57.4,6,56.6,19.5C55.8,33,50.2,47.7,39.6,57.5C28.9,67.3,13.2,72.2,-2.4,75.3C-18,78.3,-36.1,79.5,-45.1,69.7C-54.1,59.8,-54,39,-57.8,20.8C-61.5,2.6,-69,-12.9,-66.6,-27.4C-64.2,-41.9,-51.8,-55.3,-37.8,-61.4C-23.8,-67.4,-8.3,-66,-6.2,-57.7C-4.1,-49.4,-15.3,-34.2,-12.8,-25.4C-10.4,-16.7,6.2,-14.4,16.8,-19.1C27.4,-23.8,31.9,-35.5,42.7,-62.9Z' transform='translate(100 100)'/%3E%3C/svg%3E") no-repeat center center;
+        animation: rotate 60s linear infinite;
+        opacity: 0.1;
+    }
+
+    @keyframes rotate {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+
+    .header-title {
+        font-size: 1.75rem;
+        font-weight: 600;
+        margin: 0;
+        position: relative;
+        z-index: 1;
+    }
+
+    .courses-table {
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        margin: 0;
+    }
+
+    .table thead th {
+        background: #F8FAFC;
+        padding: 1rem;
+        font-weight: 600;
+        color: #2D3748;
+        font-size: 0.875rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        border-bottom: 2px solid #E2E8F0;
+    }
+
+    .table tbody td {
+        padding: 1rem;
+        color: #4A5568;
+        border-bottom: 1px solid #E2E8F0;
+        font-size: 0.95rem;
+        transition: background-color 0.2s ease;
+    }
+
+    .table tbody tr:hover td {
+        background-color: #F7FAFC;
+    }
+
+    .table tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    .action-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.5rem;
+        border-radius: 8px;
+        transition: all 0.2s ease;
+        color: #E53E3E;
+        background: #FED7D7;
+        border: none;
+        cursor: pointer;
+    }
+
+    .action-btn:hover {
+        background: #FEB2B2;
+        transform: translateY(-1px);
+    }
+
+    .action-btn i {
+        font-size: 1rem;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 3rem;
+        color: #718096;
+    }
+
+    .empty-state i {
+        font-size: 3rem;
+        color: #A0AEC0;
+        margin-bottom: 1rem;
+    }
+
+    @media (max-width: 768px) {
+        .view-courses {
+            padding: 1rem;
+        }
+
+        .courses-header {
+            padding: 1.5rem;
+        }
+
+        .header-title {
+            font-size: 1.5rem;
+        }
+
+        .table thead {
+            display: none;
+        }
+
+        .table tbody td {
+            display: block;
+            padding: 0.75rem 1rem;
+            text-align: right;
+        }
+
+        .table tbody td::before {
+            content: attr(data-label);
+            float: left;
+            font-weight: 600;
+            color: #2D3748;
+        }
+
+        .table tbody tr {
+            display: block;
+            border-bottom: 1px solid #E2E8F0;
+            padding: 0.5rem 0;
+        }
+
+        .table tbody tr:last-child {
+            border-bottom: none;
+        }
+    }
+</style>
+
+<div class="view-courses">
+    <div class="courses-header">
+        <h1 class="header-title">Available Courses</h1>
+    </div>
+
+    <div class="courses-table">
+        {% if courses %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Course</th>
+                    <th>Total Questions</th>
+                    <th>Total Marks</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for t in courses %}
+                <tr>
+                    <td data-label="Course">{{t.course_name}}</td>
+                    <td data-label="Total Questions">{{t.question_number}}</td>
+                    <td data-label="Total Marks">{{t.total_marks}}</td>
+                    <td data-label="Action">
+                        <a href="{% url 'delete-exam' t.id %}" class="action-btn" title="Delete Course">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="empty-state">
+            <i class="fas fa-book"></i>
+            <h3>No Courses Available</h3>
+            <p>Start by adding your first course</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock content %}

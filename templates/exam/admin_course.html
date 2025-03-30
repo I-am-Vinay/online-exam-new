@@ -1,0 +1,160 @@
+{% extends 'exam/adminbase.html' %}
+{% block content %}
+<style>
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .stats-card {
+    background: white;
+    border-radius: 15px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stats-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  }
+
+  .stats-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, rgba(var(--primary-rgb), 0.05), rgba(var(--primary-rgb), 0));
+    z-index: 0;
+  }
+
+  .stats-content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .stats-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+
+  .stats-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: white;
+    background: linear-gradient(120deg, var(--primary-color), var(--secondary-color));
+  }
+
+  .stats-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--secondary-color);
+    margin: 0;
+  }
+
+  .stats-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin: 0.5rem 0;
+  }
+
+  .stats-description {
+    font-size: 0.9rem;
+    color: #666;
+    margin: 0;
+  }
+
+  .stats-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--primary-color);
+    background: rgba(var(--primary-rgb), 0.1);
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+
+  .stats-link:hover {
+    background: rgba(var(--primary-rgb), 0.15);
+    transform: translateX(5px);
+  }
+
+  .page-header {
+    margin-bottom: 2rem;
+  }
+
+  .page-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--secondary-color);
+    margin: 0 0 0.5rem;
+  }
+
+  .page-subtitle {
+    font-size: 1rem;
+    color: #666;
+    margin: 0;
+  }
+</style>
+
+<div class="page-header">
+  <h1 class="page-title">Course Management</h1>
+  <p class="page-subtitle">Monitor and manage all course-related activities</p>
+</div>
+
+<div class="stats-grid">
+  <!-- Add Course Card -->
+  <div class="stats-card">
+    <div class="stats-content">
+      <div class="stats-header">
+        <h3 class="stats-title">Add New Course</h3>
+        <div class="stats-icon">
+          <i class="fas fa-plus"></i>
+        </div>
+      </div>
+      <div class="stats-value">Create Course</div>
+      <p class="stats-description">Add a new course to the examination system</p>
+      <a href="admin-add-course" class="stats-link">
+        <span>Add Course</span>
+        <i class="fas fa-arrow-right"></i>
+      </a>
+    </div>
+  </div>
+
+  <!-- View Courses Card -->
+  <div class="stats-card">
+    <div class="stats-content">
+      <div class="stats-header">
+        <h3 class="stats-title">View Courses</h3>
+        <div class="stats-icon">
+          <i class="fas fa-book"></i>
+        </div>
+      </div>
+      <div class="stats-value">Manage Courses</div>
+      <p class="stats-description">View and manage existing courses</p>
+      <a href="admin-view-course" class="stats-link">
+        <span>View Courses</span>
+        <i class="fas fa-arrow-right"></i>
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock content %}
