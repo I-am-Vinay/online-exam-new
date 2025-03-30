@@ -11,7 +11,7 @@ urlpatterns = [
     path('student/',include('student.urls')),  # Includes all student-related URLs
     
     path('',views.home_view,name=''),
-    path('logout/', views.logout_view, name='logout'),
+    path('logout', views.logout_view, name='logout'),
     path('contactus', views.contactus_view),
     path('afterlogin', views.afterlogin_view,name='afterlogin'),  # Redirects users based on their role after login
 
