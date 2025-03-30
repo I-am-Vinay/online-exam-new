@@ -23,6 +23,6 @@ jobs:
           . envs/online_testing/bin/activate
           pip install -r req.txt
           python manage.py collectstatic --noinput
-          sudo systemctl restart gunicorn.service
+          sudo systemctl restart online_testing.service
           sudo systemctl restart nginx.service
           EOF
